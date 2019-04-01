@@ -1,0 +1,15 @@
+setuptools==27.2.0
+six==1.10.0
+requests==2.18.4
+numpy==1.14.2
+scikit_learn==0.19.1
+scipy==1.0.1
+protobuf==3.5.2
+tensorflow==1.7.0
+cloudpickle==0.5.2
+protobuf==3.5.2
+tensorflow==1.7.0
+cloudpickle==0.5.2
+pandas
+
+sapclea-mlpkit-security==2.2.4

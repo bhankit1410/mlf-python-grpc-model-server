@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tensorflow-feature-sum-model
+  labels:
+    service: tensorflow-feature-sum-model
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+  annotations:
+    getambassador.io/config: |
+      ---
+      apiVersion: ambassador/v0
+      kind: Mapping
+      name: grpc_mapping
+      grpc: true
+      prefix: /tensorflow.serving.PredictionService/
+      rewrite: /tensorflow.serving.PredictionService/
+      service: tensorflow-feature-sum-model
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.externalPort }}
+      targetPort: http
+      name: {{ .Values.service.name }}
+  selector:
+    service: tensorflow-feature-sum-model
+    app: tensorflow-feature-sum-model

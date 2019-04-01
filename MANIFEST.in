@@ -1,0 +1,9 @@
+include vendor/*
+include *.yml
+include *.py
+include Procfile
+include *.txt
+include swagger/*
+include swagger/swagger-ui/*
+global-include *.cfg
+global-exclude .xmake.cfg

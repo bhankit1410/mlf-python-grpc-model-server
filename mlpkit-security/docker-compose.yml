@@ -1,0 +1,63 @@
+version: '3'
+services:
+  unit-tests:
+    image: mlpkit-security-unit-tests:latest
+    container_name: mlpkit-security-unit-tests
+    build:
+      context: .
+      dockerfile: Dockerfile.unit-tests
+    volumes:
+      - coverage-html:/usr/src/app/coverage
+      - ./mlpkitsecurity:/usr/src/app/mlpkitsecurity
+      - ./tests:/usr/src/app/tests
+  unit-tests-report:
+    image: nginx:alpine
+    container_name: mlpkit-security-unit-tests-report
+    volumes:
+      - coverage-html:/usr/share/nginx/html:ro
+    ports:
+      - 8000:80
+    depends_on:
+      - unit-tests
+  uaa:
+    image: docker.wdf.sap.corp:51031/i308605/cfuaa:latest
+    container_name: uaa
+    ports:
+      - 8080:8080
+    volumes:
+      - ./uaa-logs:/usr/local/tomcat/logs
+  integration-app:
+    image: mlpkit-security-integration-app:latest
+    container_name: mlpkit-security-integration-app
+    ports:
+      - 5000:5000
+    build:
+      context: .
+      dockerfile: Dockerfile.integration-app
+    volumes:
+      - ./mlpkitsecurity:/usr/src/app/mlpkitsecurity
+      - ./tests-integration:/usr/src/app/tests-integration
+    env_file:
+      - ./integration.env
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:5000"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+    depends_on:
+      - uaa
+  integration-tests:
+    image: mlpkit-security-integration-tests:latest
+    container_name: mlpkit-security-integration-tests
+    build:
+      context: .
+      dockerfile: Dockerfile.integration-tests
+    volumes:
+      - ./tests-integration:/usr/src/app/tests-integration
+    env_file:
+      - ./integration.env
+    depends_on:
+      - integration-app
+
+volumes:
+  coverage-html: {}

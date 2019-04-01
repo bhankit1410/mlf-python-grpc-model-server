@@ -1,0 +1,9 @@
+FROM cloudfoundry/cflinuxfs2
+LABEL maintainer="raymond.xu@sap.com"
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+RUN curl -O https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py
+RUN pip3 install --no-cache-dir -r requirements.txt
+CMD coverage run -m pytest -s tests && \
+    coverage html -d coverage --include=mlpkitsecurity/*

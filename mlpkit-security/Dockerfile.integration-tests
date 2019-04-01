@@ -1,0 +1,6 @@
+FROM python:3.5-alpine
+LABEL maintainer="raymond.xu@sap.com"
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+RUN pip3 install --no-cache-dir requests pytest
+CMD PYTHONPATH=$(pwd) pytest tests-integration/integration_tests.py

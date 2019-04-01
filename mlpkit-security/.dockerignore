@@ -1,0 +1,9 @@
+*/__pycache__*
+*/*/__pycache__*
+*.pyc
+*/*.pyc
+*/*/*.pyc
+docs
+.xmake.cfg
+README.md
+uaa-logs/*

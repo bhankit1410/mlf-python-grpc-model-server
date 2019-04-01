@@ -1,0 +1,18 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: mlf-python-grpc-model-server
+  namespace: default
+spec:
+  runLatest:
+    configuration:
+      revisionTemplate:
+        metadata:
+          annotations:
+            autoscaling.knative.dev/target: "10"
+        spec:
+          container:
+            image: sbcd90/grpc_model_server:latest
+            ports:
+              - name: h2c
+                containerPort: 9000

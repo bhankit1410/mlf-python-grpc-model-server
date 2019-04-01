@@ -1,0 +1,18 @@
+replicaCount: 1
+image:
+  repository: sbcd90/grpc_model_server
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  name: tensorflow-feature-sum-model
+  type: NodePort
+  externalPort: 80
+  internalPort: 9000
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

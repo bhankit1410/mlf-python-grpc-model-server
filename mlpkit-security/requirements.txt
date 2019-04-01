@@ -1,0 +1,4 @@
+rsa==3.4.2
+
+# extras; the above blank line is required for setup.py
+-r test-requirements.txt
